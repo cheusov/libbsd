@@ -502,6 +502,7 @@ AC_CHECK_HEADERS([\
   grp.h \
   stdio_ext.h \
   procinfo.h \
+  paths.h \
 ])
 
 # Checks for typedefs, structures, and compiler characteristics.

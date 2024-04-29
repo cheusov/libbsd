@@ -24,7 +24,9 @@
 #include <ctype.h>
 #include <errno.h>
 #include <fcntl.h>
+#if HAVE_PATHS_H
 #include <paths.h>
+#endif
 #include <pwd.h>
 #include <signal.h>
 #include <string.h>
@@ -34,6 +36,10 @@
 
 #ifndef TCSASOFT
 #define TCSASOFT 0
+#endif
+
+#ifndef _PATH_TTY
+#define _PATH_TTY "/dev/tty"
 #endif
 
 #ifndef _NSIG
