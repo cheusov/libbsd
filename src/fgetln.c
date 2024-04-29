@@ -33,7 +33,11 @@
 
 #include "local-link.h"
 
-#ifdef HAVE_GETLINE
+#ifndef HAVE_GETLINE
+ssize_t getline(char **restrict lineptr, size_t *restrict n,
+                FILE *restrict stream);
+#endif
+
 struct filebuf {
 	FILE *fp;
 	char *buf;
@@ -76,9 +80,3 @@ fgetln(FILE *stream, size_t *len)
 		return fb->buf;
 	}
 }
-libbsd_link_warning(fgetln,
-                    "The fgetln() function cannot be safely ported, use getline(3) "
-                    "instead, as it is supported by GNU and POSIX.1-2008.");
-#else
-#error "Function fgetln() needs to be ported."
-#endif
