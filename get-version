@@ -28,14 +28,14 @@
 
 if [ -f .dist-version ]; then
   # Get the version from the file distributed in the tarball.
-  version=$(cat .dist-version)
+  version=`cat .dist-version`
 elif [ -d .git ]; then
   # Ger the version from the git repository.
-  version=$(git describe --abbrev=4 HEAD 2>/dev/null)
+  version=`git describe --abbrev=4 HEAD 2>/dev/null`
 
   # Check if we are on a dirty checkout.
   git update-index --refresh -q >/dev/null
-  dirty=$(git diff-index --name-only HEAD 2>/dev/null)
+  dirty=`git diff-index --name-only HEAD 2>/dev/null`
   if [ -n "$dirty" ]; then
     version="$version-dirty"
   fi
