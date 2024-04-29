@@ -154,6 +154,18 @@ libbsd_la_SOURCES += \
 	# EOL
 endif
 
+if ABI_GETDELIM
+libbsd_la_SOURCES += \
+	getdelim.c \
+	# EOL
+endif
+
+if ABI_GETLINE
+libbsd_la_SOURCES += \
+	getline.c \
+	# EOL
+endif
+
 if ABI_FLOPEN
 libbsd_la_SOURCES += \
 	flopen.c \

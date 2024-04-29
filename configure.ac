@@ -543,6 +543,7 @@ AC_CHECK_FUNCS([\
   __fpurge \
   funopen \
   getauxval \
+  getdelim \
   getentropy \
   getexecname \
   getline \
@@ -554,6 +555,17 @@ AC_CHECK_FUNCS([\
   user_from_uid \
   group_from_gid \
 ])
+
+invert() {
+  if test "$1" = "no"; then
+    echo "yes"
+  else
+    echo "no"
+  fi
+}
+
+abi_getdelim=`invert $ac_cv_func_getdelim`
+abi_getline=`invert $ac_cv_func_getline`
 
 AM_CONDITIONAL([HAVE_GETENTROPY], [test "x$ac_cv_func_getentropy" = "xyes"])
 
@@ -579,6 +591,8 @@ LIBBSD_SELECT_ABI([fpurge], [fpurge()])
 LIBBSD_SELECT_ABI([freezero], [freezero()])
 LIBBSD_SELECT_ABI([funopen], [funopen()])
 LIBBSD_SELECT_ABI([getbsize], [getbsize()])
+LIBBSD_SELECT_ABI([getdelim], [getdelim()])
+LIBBSD_SELECT_ABI([getline], [getline()])
 LIBBSD_SELECT_ABI([getpeereid], [getpeereid()])
 LIBBSD_SELECT_ABI([humanize_number], [humanize_number()/dehumanize_number()])
 LIBBSD_SELECT_ABI([id_from_name], [uid_from_user()/gid_from_user()])

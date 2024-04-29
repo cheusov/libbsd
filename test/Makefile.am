@@ -84,6 +84,34 @@ fparseln_SOURCES = \
 	# EOL
 endif
 
+if ABI_GETLINE
+check_PROGRAMS += \
+	getline \
+	# EOL
+
+getline_SOURCES = \
+	test-stream.c \
+	test-stream.h \
+	getline.c \
+	# EOL
+
+getline_CFLAGS = -Wno-deprecated-declarations
+endif
+
+if ABI_GETDELIM
+check_PROGRAMS += \
+	getdelim \
+	# EOL
+
+getdelim_SOURCES = \
+	test-stream.c \
+	test-stream.h \
+	getdelim.c \
+	# EOL
+
+getdelim_CFLAGS = -Wno-deprecated-declarations
+endif
+
 if ABI_FPURGE
 check_PROGRAMS += fpurge
 endif

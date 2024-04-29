@@ -83,6 +83,10 @@ FILE *funopen(const void *cookie,
 #define fwopen(cookie, fn) funopen(cookie, NULL, fn, NULL, NULL)
 
 int fpurge(FILE *fp);
+
+ssize_t getline(char** lineptr, size_t* n, FILE* stream);
+ssize_t getdelim(char** buf, size_t* bufsiz, int delimiter, FILE* fp);
+
 __END_DECLS
 
 #endif
