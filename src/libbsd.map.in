@@ -325,4 +325,7 @@ LIBBSD_0.13.0 {
 #if LIBBSD_ABI_GETLINE
     getline;
 #endif
+#if LIBBSD_ABI_MEMMEM
+    memmem;
+#endif
 } LIBBSD_0.12.0;

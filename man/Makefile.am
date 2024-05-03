@@ -294,6 +294,12 @@ dist_man_MANS += \
 	# EOL
 endif
 
+if ABI_MEMMEM
+dist_man_MANS += \
+	memmem.3bsd \
+	# EOL
+endif
+
 if ABI_NLIST
 dist_man_MANS += \
 	nlist.3bsd \

@@ -56,6 +56,10 @@ void strmode(mode_t mode, char *str);
     !defined(_DEFAULT_SOURCE)
 void explicit_bzero(void *buf, size_t len);
 #endif
+
+void *memmem(const void *haystack, size_t haystacklen,
+             const void *needle, size_t needlelen);
+
 __END_DECLS
 
 #endif

@@ -227,6 +227,12 @@ libbsd_la_SOURCES += \
 	# EOL
 endif
 
+if ABI_MEMMEM
+libbsd_la_SOURCES += \
+	memmem.c \
+	# EOL
+endif
+
 if ABI_NLIST
 libbsd_la_SOURCES += \
 	nlist.c \

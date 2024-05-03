@@ -548,6 +548,7 @@ AC_CHECK_FUNCS([\
   getentropy \
   getexecname \
   getline \
+  memmem \
   open_memstream \
   pstat_getproc \
   sysconf \
@@ -567,6 +568,7 @@ invert() {
 
 abi_getdelim=`invert $ac_cv_func_getdelim`
 abi_getline=`invert $ac_cv_func_getline`
+abi_memmem=`invert $ac_cv_func_getline`
 
 AM_CONDITIONAL([HAVE_GETENTROPY], [test "x$ac_cv_func_getentropy" = "xyes"])
 
@@ -599,6 +601,7 @@ LIBBSD_SELECT_ABI([humanize_number], [humanize_number()/dehumanize_number()])
 LIBBSD_SELECT_ABI([id_from_name], [uid_from_user()/gid_from_user()])
 LIBBSD_SELECT_ABI([inet_net_pton], [inet_net_pton()])
 LIBBSD_SELECT_ABI([md5], [MD5 digest functions])
+LIBBSD_SELECT_ABI([memmem], [memmem()])
 LIBBSD_SELECT_ABI([name_from_id], [user_from_uid()/group_from_gid()])
 LIBBSD_SELECT_ABI([nlist], [nlist()])
 LIBBSD_SELECT_ABI([pidfile], [pidfile API])
