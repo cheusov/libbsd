@@ -271,7 +271,7 @@ AS_CASE([$host_os],
     abi_asprintf=no
     abi_bsd_getopt=yes
     abi_closefrom=no
-    abi_err=no
+    abi_err=yes
     abi_errc=yes
     abi_expand_number=yes
     abi_explicit_bzero=yes
