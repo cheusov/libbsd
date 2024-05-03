@@ -157,6 +157,17 @@ test_fgetwln_single(void)
 	pipe_close(fp);
 }
 
+// wcsdup is here because it is not available on Solaris-10
+static wchar_t *
+_wcsdup(const wchar_t *s)
+{
+	size_t len = wcslen(s) + 1;
+	wchar_t *copy = malloc(len * sizeof(wchar_t));
+	if (copy == NULL)
+		return NULL;
+	return memcpy(copy, s, len * sizeof(wchar_t));
+}
+
 static void
 test_fgetwln_multi(void)
 {
@@ -166,7 +177,7 @@ test_fgetwln_multi(void)
 	for (i = 0; i < FILE_COUNT; i++) {
 		wchar_t *wstr;
 
-		wstr = wcsdup(L"A\n");
+		wstr = _wcsdup(L"A\n"); 
 		wstr[0] += i;
 
 		files[i].line_alloc = wstr;
