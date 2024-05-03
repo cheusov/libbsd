@@ -292,7 +292,7 @@ AS_CASE([$host_os],
     abi_nlist=no
     abi_pidfile=yes
     abi_proctitle=yes
-    abi_progname=no
+    abi_progname=yes
     abi_readpassphrase=yes
     abi_reallocarray=yes
     abi_reallocf=no
