@@ -363,6 +363,9 @@ AS_CASE([$host_os],
   ],
 )
 
+AC_CHECK_LIB([rt], [nanosleep],
+  [TEST_LIBS="-lrt"])
+
 # Handle artificial ABI selections that are combinations of others.
 AS_IF([test "$abi_name_from_id" = "yes" || test "$abi_id_from_name" = "yes"], [
   abi_pwcache=yes
@@ -632,6 +635,7 @@ AS_IF([test "x$abi_funopen" = "xno" && \
 
 AC_SUBST([MD5_LIBS])
 AC_SUBST([LIBBSD_LIBS])
+AC_SUBST([TEST_LIBS])
 
 AC_CONFIG_FILES([
   Makefile

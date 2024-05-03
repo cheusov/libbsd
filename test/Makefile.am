@@ -19,7 +19,7 @@ AM_TESTS_ENVIRONMENT = \
 	export top_srcdir="$(top_srcdir)"; \
 	# EOL
 
-LDADD = $(top_builddir)/src/libbsd.la
+LDADD = $(top_builddir)/src/libbsd.la $(TEST_LIBS)
 
 EXTRA_DIST = \
 	headers-overlay.sh \
