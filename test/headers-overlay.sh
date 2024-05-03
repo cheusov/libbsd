@@ -11,7 +11,7 @@ run()
 incdir="${top_srcdir}/include/bsd"
 CPPFLAGS="$CPPFLAGS -DLIBBSD_OVERLAY"
 
-for inc in $(cd $incdir; find -name '*.h' | sort | cut -c3-); do
+for inc in `cd $incdir; find -name '*.h' | sort | cut -c3-`; do
   cat >headers-overlay-gen.c <<SOURCE
 #include <$inc>
 int main() { return 0; }
