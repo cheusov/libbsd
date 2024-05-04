@@ -45,8 +45,6 @@ is_windows=no
 api_time_macros=unknown
 
 abi_accmode=unknown
-abi_arc4random=unknown
-abi_arc4random_stir=unknown
 abi_asprintf=unknown
 abi_bsd_getopt=unknown
 abi_closefrom=unknown
@@ -92,9 +90,6 @@ AS_CASE([$host_os],
 
     abi_accmode=yes
     # DROP: On glibc >= 2.36.
-    #abi_arc4random=no
-    abi_arc4random=yes
-    abi_arc4random_stir=yes
     abi_asprintf=no
     abi_bsd_getopt=yes
     # DROP: On glibc >= 2.34.
@@ -152,8 +147,6 @@ AS_CASE([$host_os],
     api_time_macros=no
 
     abi_accmode=yes
-    abi_arc4random=yes
-    abi_arc4random_stir=yes
     abi_asprintf=no
     # DROP: On musl >= 0.9.7, optreset got implemented.
     #abi_bsd_getopt=no
@@ -218,8 +211,6 @@ AS_CASE([$host_os],
     api_time_macros=no
 
     abi_accmode=no
-    abi_arc4random=no
-    abi_arc4random_stir=no
     abi_asprintf=no
     abi_bsd_getopt=no
     abi_closefrom=yes
@@ -266,8 +257,6 @@ AS_CASE([$host_os],
     api_time_macros=yes
 
     abi_accmode=yes
-    abi_arc4random=no
-    abi_arc4random_stir=no
     abi_asprintf=no
     abi_bsd_getopt=yes
     abi_closefrom=no
@@ -314,8 +303,6 @@ AS_CASE([$host_os],
     api_time_macros=yes
 
     abi_accmode=yes
-    abi_arc4random=yes
-    abi_arc4random_stir=yes
     abi_asprintf=yes
     abi_bsd_getopt=yes
     abi_closefrom=yes
@@ -386,6 +373,46 @@ AC_PROG_CC
 AC_PROG_SED
 AC_PROG_INSTALL
 AC_PROG_LN_S
+
+AC_CHECK_FUNCS([\
+  arc4random \
+  arc4random_stir \
+  vasprintf \
+  asprintf \
+  clearenv \
+  dirfd \
+  flock \
+  fopencookie \
+  __fpurge \
+  funopen \
+  getauxval \
+  getdelim \
+  getentropy \
+  getexecname \
+  getline \
+  memmem \
+  open_memstream \
+  pstat_getproc \
+  sysconf \
+  uid_from_user \
+  gid_from_group \
+  user_from_uid \
+  group_from_gid \
+])
+
+invert() {
+  if test "$1" = "no"; then
+    echo "yes"
+  else
+    echo "no"
+  fi
+}
+
+abi_arc4random=`invert $ac_cv_func_arc4random`
+abi_arc4random_stir=`invert $ac_cv_func_arc4random_stir`
+abi_getdelim=`invert $ac_cv_func_getdelim`
+abi_getline=`invert $ac_cv_func_getline`
+abi_memmem=`invert $ac_cv_func_getline`
 
 # Set default compiler variables
 AS_IF([test "$user_CFLAGS" = unset], [
@@ -458,19 +485,35 @@ AS_IF([test "$abi_md5" = "yes"], [
     AC_MSG_ERROR([cannot find required MD5 functions in libc or libmd])
   ])
 ])
+
 AS_IF([test "$abi_arc4random" = "yes"], [
+  if test "x$ac_cv_lib_rt_nanosleep" = xyes; then
+    LIBBSD_LIBS="$LIBBSD_LIBS -lrt"
+  fi
+
   AC_CHECK_FUNCS([getentropy])
 
   AS_IF([test "$ac_cv_func_getentropy" != "yes"], [
     AC_SEARCH_LIBS([SHA512Update], [md], [
       AS_IF([test "x$ac_cv_search_SHA512Update" != "xnone required"], [
-        LIBBSD_LIBS="$SHA512_LIBS $ac_cv_search_SHA512Update"
+        LIBBSD_LIBS="$LIBBSD_LIBS $SHA512_LIBS $ac_cv_search_SHA512Update"
       ])
     ], [
       AC_MSG_ERROR([cannot find required SHA-2 functions in libc or libmd])
     ])
   ])
+  AC_SEARCH_LIBS([getpeername], [socket], [
+    AS_IF([test "x$ac_cv_search_getpeername" != "xnone required"], [
+      LIBBSD_LIBS="$LIBBSD_LIBS $ac_cv_search_getpeername"
+    ])
+  ])
+  AC_SEARCH_LIBS([dl_iterate_phdr], [dl], [
+    AS_IF([test "x$ac_cv_search_dl_iterate_phdr" != "xnone required"], [
+      LIBBSD_LIBS="$LIBBSD_LIBS $ac_cv_search_dl_iterate_phdr"
+    ])
+  ])
 ])
+
 LIBS="$saved_LIBS"
 
 AS_CASE([$host_os],
@@ -536,30 +579,6 @@ LIBBSD_HAS_GNU_INIT_ARRAY
 # Checks for library functions.
 LIBBSD_CHECK_PROGNAME
 LIBBSD_CHECK_REGISTER_ATFORK
-
-AC_CHECK_FUNCS([\
-  vasprintf \
-  asprintf \
-  clearenv \
-  dirfd \
-  flock \
-  fopencookie \
-  __fpurge \
-  funopen \
-  getauxval \
-  getdelim \
-  getentropy \
-  getexecname \
-  getline \
-  memmem \
-  open_memstream \
-  pstat_getproc \
-  sysconf \
-  uid_from_user \
-  gid_from_group \
-  user_from_uid \
-  group_from_gid \
-])
 
 invert() {
   if test "$1" = "no"; then

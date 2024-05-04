@@ -43,6 +43,8 @@ check_PROGRAMS += \
 endif
 
 if ABI_ARC4RANDOM
+check_PROGRAMS += arc4random_trivial
+
 if HAVE_LIBTESTU01
 check_PROGRAMS += arc4random
 
