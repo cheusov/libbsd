@@ -48,7 +48,6 @@ abi_accmode=unknown
 abi_asprintf=unknown
 abi_bsd_getopt=unknown
 abi_closefrom=unknown
-abi_err=unknown
 abi_errc=unknown
 abi_expand_number=unknown
 abi_explicit_bzero=unknown
@@ -95,7 +94,6 @@ AS_CASE([$host_os],
     # DROP: On glibc >= 2.34.
     #abi_closefrom=no
     abi_closefrom=yes
-    abi_err=no
     abi_errc=yes
     abi_expand_number=yes
     # DROP: On glibc >= 2.25.
@@ -152,7 +150,6 @@ AS_CASE([$host_os],
     #abi_bsd_getopt=no
     abi_bsd_getopt=yes
     abi_closefrom=yes
-    abi_err=no
     abi_errc=yes
     abi_expand_number=yes
     # DROP: On musl >= 1.1.20.
@@ -214,7 +211,6 @@ AS_CASE([$host_os],
     abi_asprintf=no
     abi_bsd_getopt=no
     abi_closefrom=yes
-    abi_err=no
     abi_errc=no
     abi_expand_number=yes
     abi_explicit_bzero=yes
@@ -260,7 +256,6 @@ AS_CASE([$host_os],
     abi_asprintf=no
     abi_bsd_getopt=yes
     abi_closefrom=no
-    abi_err=yes
     abi_errc=yes
     abi_expand_number=yes
     abi_explicit_bzero=yes
@@ -306,7 +301,6 @@ AS_CASE([$host_os],
     abi_asprintf=yes
     abi_bsd_getopt=yes
     abi_closefrom=yes
-    abi_err=yes
     abi_errc=yes
     abi_expand_number=yes
     abi_explicit_bzero=yes
@@ -353,18 +347,6 @@ AS_CASE([$host_os],
 AC_CHECK_LIB([rt], [nanosleep],
   [TEST_LIBS="-lrt"])
 
-# Handle artificial ABI selections that are combinations of others.
-AS_IF([test "$abi_name_from_id" = "yes" || test "$abi_id_from_name" = "yes"], [
-  abi_pwcache=yes
-], [
-  abi_pwcache=no
-])
-AS_IF([test "$abi_err" = "yes" || test "$abi_errc" = "yes"], [
-  abi_err_h=yes
-], [
-  abi_err_h=no
-])
-
 AM_CONDITIONAL([OS_WINDOWS], [test "x$is_windows" = "xyes"])
 
 # Checks for programs.
@@ -381,6 +363,7 @@ AC_CHECK_FUNCS([\
   asprintf \
   clearenv \
   dirfd \
+  errx \
   flock \
   fopencookie \
   __fpurge \
@@ -413,6 +396,19 @@ abi_arc4random_stir=`invert $ac_cv_func_arc4random_stir`
 abi_getdelim=`invert $ac_cv_func_getdelim`
 abi_getline=`invert $ac_cv_func_getline`
 abi_memmem=`invert $ac_cv_func_getline`
+abi_err=`invert $ac_cv_func_errx`
+
+# Handle artificial ABI selections that are combinations of others.
+AS_IF([test "$abi_name_from_id" = "yes" || test "$abi_id_from_name" = "yes"], [
+  abi_pwcache=yes
+], [
+  abi_pwcache=no
+])
+AS_IF([test "$abi_err" = "yes" || test "$abi_errc" = "yes"], [
+  abi_err_h=yes
+], [
+  abi_err_h=no
+])
 
 # Set default compiler variables
 AS_IF([test "$user_CFLAGS" = unset], [
